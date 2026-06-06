@@ -74,13 +74,16 @@ const books = [
 ];
 
 let selectedBooks = [];
+let favoriteBooks = [];
 let bookRatings = {};
 let activeBookId = null;
+let activeView = "all";
 
 const booksGrid = document.getElementById("booksGrid");
 const searchInput = document.getElementById("searchInput");
 const genreSelect = document.getElementById("genreSelect");
 const genreButtons = document.getElementById("genreButtons");
+const viewTabs = document.getElementById("viewTabs");
 const booksCount = document.getElementById("booksCount");
 const selectedCount = document.getElementById("selectedCount");
 const selectedList = document.getElementById("selectedList");
@@ -131,8 +134,9 @@ function getFilteredBooks() {
         const matchesSearch = book.title.toLowerCase().includes(searchValue)
             || book.author.toLowerCase().includes(searchValue);
         const matchesGenre = genreValue === "all" || book.genre === genreValue;
+        const matchesView = activeView === "all" || favoriteBooks.includes(book.id);
 
-        return matchesSearch && matchesGenre;
+        return matchesSearch && matchesGenre && matchesView;
     });
 }
 
@@ -177,16 +181,31 @@ function renderGenreButtons() {
     });
 }
 
+function renderViewTabs() {
+    const tabs = viewTabs.querySelectorAll("button");
+
+    tabs.forEach((tab) => {
+        const isActive = tab.dataset.view === activeView;
+        tab.classList.toggle("active", isActive);
+
+        if (tab.dataset.view === "favorites") {
+            tab.textContent = `Избранное (${favoriteBooks.length})`;
+        }
+    });
+}
+
 function renderBooks() {
     const filteredBooks = getFilteredBooks();
 
     booksGrid.innerHTML = "";
+    renderViewTabs();
     renderGenreButtons();
     booksCount.textContent = `${filteredBooks.length} ${getBooksWord(filteredBooks.length)}`;
     emptyMessage.classList.toggle("show", filteredBooks.length === 0);
 
     filteredBooks.forEach((book) => {
         const isSelected = selectedBooks.includes(book.id);
+        const isFavorite = favoriteBooks.includes(book.id);
         const card = document.createElement("article");
         card.className = "book-card";
         const safeTitle = escapeHtml(book.title);
@@ -195,6 +214,9 @@ function renderBooks() {
 
         card.innerHTML = `
             <div class="cover ${book.cover}">
+                <button class="favorite-button ${isFavorite ? "active" : ""}" type="button" data-action="favorite" data-id="${book.id}" aria-label="Добавить в избранное">
+                    ${isFavorite ? "★" : "☆"}
+                </button>
                 <span class="cover-title">${safeTitle}</span>
             </div>
             <div class="book-info">
@@ -303,6 +325,17 @@ booksGrid.addEventListener("click", (event) => {
         return;
     }
 
+    if (button.dataset.action === "favorite") {
+        if (favoriteBooks.includes(bookId)) {
+            favoriteBooks = favoriteBooks.filter((id) => id !== bookId);
+        } else {
+            favoriteBooks.push(bookId);
+        }
+
+        updatePage();
+        return;
+    }
+
     if (selectedBooks.includes(bookId)) {
         selectedBooks = selectedBooks.filter((id) => id !== bookId);
     } else {
@@ -326,6 +359,17 @@ selectedList.addEventListener("click", (event) => {
 
 searchInput.addEventListener("input", renderBooks);
 genreSelect.addEventListener("change", renderBooks);
+
+viewTabs.addEventListener("click", (event) => {
+    const button = event.target.closest("button");
+
+    if (!button) {
+        return;
+    }
+
+    activeView = button.dataset.view;
+    renderBooks();
+});
 
 genreButtons.addEventListener("click", (event) => {
     const button = event.target.closest("button");
@@ -354,6 +398,7 @@ addBookForm.addEventListener("submit", (event) => {
     addBookForm.reset();
     searchInput.value = "";
     genreSelect.value = "all";
+    activeView = "all";
     updatePage();
 });
 

@@ -107,6 +107,34 @@ body {
     font-weight: 700;
 }
 
+.catalog-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.catalog-tab {
+    min-height: 38px;
+    border: 1px solid #cfc7bb;
+    border-radius: 6px;
+    padding: 0 14px;
+    font: inherit;
+    font-weight: 700;
+    color: #314d43;
+    background: #fffdf9;
+    cursor: pointer;
+}
+
+.catalog-tab:hover {
+    background: #edf4ef;
+}
+
+.catalog-tab.active {
+    border-color: #314d43;
+    color: #ffffff;
+    background: #314d43;
+}
+
 .filters {
     display: grid;
     grid-template-columns: 1fr 220px;
@@ -184,10 +212,30 @@ select:focus {
 }
 
 .cover {
+    position: relative;
     height: 142px;
     padding: 18px;
     color: #ffffff;
     background: #6d826f;
+}
+
+.favorite-button {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 34px;
+    height: 34px;
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    border-radius: 50%;
+    color: #ffffff;
+    background: rgba(0, 0, 0, 0.18);
+    cursor: pointer;
+}
+
+.favorite-button.active {
+    border-color: #f3c995;
+    color: #314d43;
+    background: #f3c995;
 }
 
 .cover.classic {
@@ -477,7 +525,8 @@ body.dark-theme .modal-card {
 body.dark-theme .book-card,
 body.dark-theme .selected-list li,
 body.dark-theme .rating-button,
-body.dark-theme .genre-filter {
+body.dark-theme .genre-filter,
+body.dark-theme .catalog-tab {
     border-color: #35443e;
     background: #1d2522;
 }
@@ -511,6 +560,20 @@ body.dark-theme .book-info button.added {
 
 body.dark-theme .genre-filter {
     color: #dce9df;
+}
+
+body.dark-theme .catalog-tab {
+    color: #dce9df;
+}
+
+body.dark-theme .catalog-tab:hover {
+    background: #30443b;
+}
+
+body.dark-theme .catalog-tab.active {
+    border-color: #83a792;
+    color: #111816;
+    background: #83a792;
 }
 
 body.dark-theme .genre-filter:hover {
