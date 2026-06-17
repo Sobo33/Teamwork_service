@@ -36,15 +36,38 @@
 ## Структура проекта
 
 ```text
-WebApp/
-|-- assets/
+coworking-booking/
+|-- index.html
+|-- css/
+|   `-- style.css
+|-- js/
+|   |-- data.js
+|   `-- script.js
+|-- images/
 |   |-- meeting-room.jpg
 |   |-- open-space.jpg
-|   `-- private-office.jpg
-|-- index.html
-|-- styles.css
-`-- script.js
+|   |-- private-office.jpg
+|   |-- skyline-coworking.jpg
+|   `-- team-office.jpg
+|-- КП_Сусло_Антон(пояснительная записка).docx
+`-- README.md
 ```
+
+## Описание файлов
+
+`index.html` содержит структуру интерфейса, формы поиска и бронирования, каталог и модальные окна.
+
+`css/style.css` отвечает за оформление, темы и адаптивную компоновку.
+
+`js/data.js` содержит исходный каталог коворкингов.
+
+`js/script.js` содержит фильтрацию, отображение карточек, работу с избранным, бронированиями и `localStorage`.
+
+`images/` содержит изображения рабочих пространств.
+
+## Запуск проекта
+
+Для запуска не требуется установка зависимостей. Откройте файл `index.html` в современном браузере.
 
 ## Назначение проекта
 

@@ -1,90 +1,3 @@
-const spaces = [
-    {
-        id: 1,
-        name: "Панорама",
-        type: "open",
-        typeLabel: "Открытое место",
-        address: "м. Смоленская, Новый Арбат, 21",
-        district: "Арбат",
-        capacity: 1,
-        price: 350,
-        rating: 4.9,
-        image: "assets/open-space.jpg",
-        features: ["Wi-Fi", "Кофе", "Принтер"],
-        description: "Светлая рабочая зона с большими окнами, удобными креслами и общими столами. Подходит для индивидуальной работы на несколько часов или полный день."
-    },
-    {
-        id: 2,
-        name: "Фокус",
-        type: "office",
-        typeLabel: "Приватный кабинет",
-        address: "м. Белорусская, Лесная улица, 7",
-        district: "Белорусская",
-        capacity: 2,
-        price: 750,
-        rating: 4.8,
-        image: "assets/private-office.jpg",
-        features: ["Тишина", "Монитор", "Кондиционер"],
-        description: "Небольшой закрытый кабинет для одного или двух человек. Здесь удобно проводить созвоны, работать с документами и сосредоточиться без постороннего шума."
-    },
-    {
-        id: 3,
-        name: "Диалог",
-        type: "meeting",
-        typeLabel: "Переговорная",
-        address: "м. Павелецкая, Дербеневская набережная, 11",
-        district: "Павелецкая",
-        capacity: 6,
-        price: 1200,
-        rating: 4.7,
-        image: "assets/meeting-room.jpg",
-        features: ["Экран", "Доска", "Видеосвязь"],
-        description: "Переговорная комната для встреч, презентаций и командной работы. В стоимость входят большой экран, маркерная доска и оборудование для видеосвязи."
-    },
-    {
-        id: 4,
-        name: "Зелёный этаж",
-        type: "open",
-        typeLabel: "Открытое место",
-        address: "м. Курская, Нижний Сусальный переулок, 5",
-        district: "Курская",
-        capacity: 1,
-        price: 300,
-        rating: 4.6,
-        image: "assets/open-space.jpg",
-        features: ["Wi-Fi", "Кухня", "Лаунж"],
-        description: "Спокойная открытая зона с растениями и отдельными местами для коротких звонков. В течение дня доступны кухня и небольшая зона отдыха."
-    },
-    {
-        id: 5,
-        name: "Кабинет 24",
-        type: "office",
-        typeLabel: "Приватный кабинет",
-        address: "м. Тульская, Большая Тульская улица, 19",
-        district: "Тульская",
-        capacity: 2,
-        price: 680,
-        rating: 4.5,
-        image: "assets/private-office.jpg",
-        features: ["Тишина", "Лампы", "Шкаф"],
-        description: "Компактный кабинет с двумя рабочими столами и местом для хранения вещей. Подходит для совместной работы над небольшим проектом."
-    },
-    {
-        id: 6,
-        name: "Большая встреча",
-        type: "meeting",
-        typeLabel: "Переговорная",
-        address: "м. Динамо, Ленинградский проспект, 36",
-        district: "Динамо",
-        capacity: 10,
-        price: 1650,
-        rating: 4.9,
-        image: "assets/meeting-room.jpg",
-        features: ["Экран", "Камера", "Флипчарт"],
-        description: "Просторная переговорная для команд до десяти человек. Комната подходит для собеседований, учебных занятий и деловых презентаций."
-    }
-];
-
 spaces.push(...loadUserSpaces());
 
 const state = {
@@ -766,15 +679,15 @@ addSpaceForm.addEventListener("submit", (event) => {
     const typeSettings = {
         open: {
             label: "Открытое место",
-            image: "assets/open-space.jpg"
+            image: "images/open-space.jpg"
         },
         office: {
             label: "Приватный кабинет",
-            image: "assets/private-office.jpg"
+            image: "images/private-office.jpg"
         },
         meeting: {
             label: "Переговорная",
-            image: "assets/meeting-room.jpg"
+            image: "images/meeting-room.jpg"
         }
     };
     const selectedType = typeSettings[newSpaceType.value];
