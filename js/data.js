@@ -9,7 +9,7 @@ const spaces = [
         capacity: 1,
         price: 350,
         rating: 4.9,
-        image: "images/open-space.jpg",
+        image: "images/coworking-space_1.jpg",
         features: ["Wi-Fi", "Кофе", "Принтер"],
         description: "Светлая рабочая зона с большими окнами, удобными креслами и общими столами. Подходит для индивидуальной работы на несколько часов или полный день."
     },
@@ -23,7 +23,7 @@ const spaces = [
         capacity: 2,
         price: 750,
         rating: 4.8,
-        image: "images/private-office.jpg",
+        image: "images/coworking-space_2.jpg",
         features: ["Тишина", "Монитор", "Кондиционер"],
         description: "Небольшой закрытый кабинет для одного или двух человек. Здесь удобно проводить созвоны, работать с документами и сосредоточиться без постороннего шума."
     },
@@ -37,7 +37,7 @@ const spaces = [
         capacity: 6,
         price: 1200,
         rating: 4.7,
-        image: "images/meeting-room.jpg",
+        image: "images/coworking-space_3.jpg",
         features: ["Экран", "Доска", "Видеосвязь"],
         description: "Переговорная комната для встреч, презентаций и командной работы. В стоимость входят большой экран, маркерная доска и оборудование для видеосвязи."
     },
@@ -51,7 +51,7 @@ const spaces = [
         capacity: 1,
         price: 300,
         rating: 4.6,
-        image: "images/open-space.jpg",
+        image: "images/coworking-space_1.jpg",
         features: ["Wi-Fi", "Кухня", "Лаунж"],
         description: "Спокойная открытая зона с растениями и отдельными местами для коротких звонков. В течение дня доступны кухня и небольшая зона отдыха."
     },
@@ -65,7 +65,7 @@ const spaces = [
         capacity: 2,
         price: 680,
         rating: 4.5,
-        image: "images/private-office.jpg",
+        image: "images/coworking-space_2.jpg",
         features: ["Тишина", "Лампы", "Шкаф"],
         description: "Компактный кабинет с двумя рабочими столами и местом для хранения вещей. Подходит для совместной работы над небольшим проектом."
     },
@@ -79,7 +79,7 @@ const spaces = [
         capacity: 10,
         price: 1650,
         rating: 4.9,
-        image: "images/meeting-room.jpg",
+        image: "images/coworking-space_3.jpg",
         features: ["Экран", "Камера", "Флипчарт"],
         description: "Просторная переговорная для команд до десяти человек. Комната подходит для собеседований, учебных занятий и деловых презентаций."
     },
@@ -93,7 +93,7 @@ const spaces = [
         capacity: 1,
         price: 520,
         rating: 4.9,
-        image: "images/skyline-coworking.jpg",
+        image: "images/coworking-space_4.jpg",
         features: ["Wi-Fi", "Кофе", "Монитор"],
         description: "Панорамное рабочее пространство с видом на город, просторными столами и большим количеством естественного света. Подходит для спокойной индивидуальной работы и онлайн-встреч."
     },
@@ -107,7 +107,7 @@ const spaces = [
         capacity: 4,
         price: 1450,
         rating: 4.8,
-        image: "images/team-office.jpg",
+        image: "images/coworking-space_5.jpg",
         features: ["Wi-Fi", "Монитор", "Видеосвязь"],
         description: "Тихий кабинет для небольшой проектной команды. Внутри находятся четыре полноценных рабочих места, экран для совместной работы и хорошая звукоизоляция."
     }

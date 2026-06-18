@@ -42,6 +42,8 @@ const cancelEditButton = document.getElementById("cancelEditButton");
 const bookingList = document.getElementById("bookingList");
 const bookingEmpty = document.getElementById("bookingEmpty");
 const historyCount = document.getElementById("historyCount");
+const menuButton = document.getElementById("menuButton");
+const mainNav = document.getElementById("mainNav");
 const themeButton = document.getElementById("themeButton");
 const spaceModal = document.getElementById("spaceModal");
 const modalClose = document.getElementById("modalClose");
@@ -471,6 +473,12 @@ function setTheme(isDark) {
     localStorage.setItem("coworkingTheme", isDark ? "dark" : "light");
 }
 
+function setMenuOpen(isOpen) {
+    mainNav.classList.toggle("open", isOpen);
+    menuButton.setAttribute("aria-expanded", String(isOpen));
+    menuButton.setAttribute("aria-label", isOpen ? "Закрыть меню" : "Открыть меню");
+}
+
 typeFilters.addEventListener("click", (event) => {
     const button = event.target.closest("button");
 
@@ -679,15 +687,15 @@ addSpaceForm.addEventListener("submit", (event) => {
     const typeSettings = {
         open: {
             label: "Открытое место",
-            image: "images/open-space.jpg"
+            image: "images/coworking-space_1.jpg"
         },
         office: {
             label: "Приватный кабинет",
-            image: "images/private-office.jpg"
+            image: "images/coworking-space_2.jpg"
         },
         meeting: {
             label: "Переговорная",
-            image: "images/meeting-room.jpg"
+            image: "images/coworking-space_3.jpg"
         }
     };
     const selectedType = typeSettings[newSpaceType.value];
@@ -775,6 +783,8 @@ modalSelect.addEventListener("click", () => {
 
 document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
+        setMenuOpen(false);
+
         if (spaceModal.classList.contains("show")) {
             closeModal();
         }
@@ -787,6 +797,22 @@ document.addEventListener("keydown", (event) => {
 
 themeButton.addEventListener("click", () => {
     setTheme(!document.body.classList.contains("dark-theme"));
+});
+
+menuButton.addEventListener("click", () => {
+    setMenuOpen(menuButton.getAttribute("aria-expanded") !== "true");
+});
+
+mainNav.addEventListener("click", (event) => {
+    if (event.target.closest("a")) {
+        setMenuOpen(false);
+    }
+});
+
+window.matchMedia("(min-width: 721px)").addEventListener("change", (event) => {
+    if (event.matches) {
+        setMenuOpen(false);
+    }
 });
 
 const now = new Date();

@@ -16,12 +16,22 @@
             </span>
         </a>
 
-        <nav class="header-nav" aria-label="Основная навигация">
+        <nav class="header-nav" id="mainNav" aria-label="Основная навигация">
             <a href="#spaces">Пространства</a>
             <a href="#booking">Бронирование</a>
         </nav>
 
-        <button class="theme-button" id="themeButton" type="button">Тёмная тема</button>
+        <div class="header-actions">
+            <button
+                class="menu-button"
+                id="menuButton"
+                type="button"
+                aria-label="Открыть меню"
+                aria-controls="mainNav"
+                aria-expanded="false"
+            >☰</button>
+            <button class="theme-button" id="themeButton" type="button">Тёмная тема</button>
+        </div>
     </header>
 
     <main>

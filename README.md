@@ -44,11 +44,11 @@ coworking-booking/
 |   |-- data.js
 |   `-- script.js
 |-- images/
-|   |-- meeting-room.jpg
-|   |-- open-space.jpg
-|   |-- private-office.jpg
-|   |-- skyline-coworking.jpg
-|   `-- team-office.jpg
+|   |-- coworking-space_1.jpg
+|   |-- coworking-space_2.jpg
+|   |-- coworking-space_3.jpg
+|   |-- coworking-space_4.jpg
+|   `-- coworking-space_5.jpg
 |-- КП_Сусло_Антон(пояснительная записка).docx
 `-- README.md
 ```
