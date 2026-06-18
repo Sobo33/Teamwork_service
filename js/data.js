@@ -51,7 +51,7 @@ const spaces = [
         capacity: 1,
         price: 300,
         rating: 4.6,
-        image: "images/coworking-space_1.jpg",
+        image: "images/coworking-space_4.jpg",
         features: ["Wi-Fi", "Кухня", "Лаунж"],
         description: "Спокойная открытая зона с растениями и отдельными местами для коротких звонков. В течение дня доступны кухня и небольшая зона отдыха."
     },
@@ -65,7 +65,7 @@ const spaces = [
         capacity: 2,
         price: 680,
         rating: 4.5,
-        image: "images/coworking-space_2.jpg",
+        image: "images/coworking-space_5.jpg",
         features: ["Тишина", "Лампы", "Шкаф"],
         description: "Компактный кабинет с двумя рабочими столами и местом для хранения вещей. Подходит для совместной работы над небольшим проектом."
     },
@@ -79,7 +79,7 @@ const spaces = [
         capacity: 10,
         price: 1650,
         rating: 4.9,
-        image: "images/coworking-space_3.jpg",
+        image: "images/coworking-space_6.jpg",
         features: ["Экран", "Камера", "Флипчарт"],
         description: "Просторная переговорная для команд до десяти человек. Комната подходит для собеседований, учебных занятий и деловых презентаций."
     },
@@ -93,7 +93,7 @@ const spaces = [
         capacity: 1,
         price: 520,
         rating: 4.9,
-        image: "images/coworking-space_4.jpg",
+        image: "images/coworking-space_7.jpg",
         features: ["Wi-Fi", "Кофе", "Монитор"],
         description: "Панорамное рабочее пространство с видом на город, просторными столами и большим количеством естественного света. Подходит для спокойной индивидуальной работы и онлайн-встреч."
     },
@@ -107,7 +107,7 @@ const spaces = [
         capacity: 4,
         price: 1450,
         rating: 4.8,
-        image: "images/coworking-space_5.jpg",
+        image: "images/coworking-space_8.jpg",
         features: ["Wi-Fi", "Монитор", "Видеосвязь"],
         description: "Тихий кабинет для небольшой проектной команды. Внутри находятся четыре полноценных рабочих места, экран для совместной работы и хорошая звукоизоляция."
     }

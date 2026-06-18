@@ -153,10 +153,11 @@
                     </div>
                 </div>
 
-                <form class="booking-form" id="bookingForm">
+                <form class="booking-form" id="bookingForm" novalidate>
                     <label class="field">
                         <span>Дата</span>
-                        <input id="bookingDate" type="date" required>
+                        <input id="bookingDate" type="date" aria-describedby="bookingDateError" required>
+                        <small class="field-error" id="bookingDateError" aria-live="polite"></small>
                     </label>
 
                     <div class="form-row">
@@ -177,21 +178,34 @@
                         </label>
 
                         <label class="field">
-                            <span>Часов</span>
+                            <span>Период</span>
                             <select id="bookingDuration">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="6">6</option>
-                                <option value="8">8</option>
+                                <optgroup label="Часы">
+                                    <option value="1">1 час</option>
+                                    <option value="2">2 часа</option>
+                                    <option value="3">3 часа</option>
+                                    <option value="4">4 часа</option>
+                                    <option value="6">6 часов</option>
+                                    <option value="8">8 часов</option>
+                                </optgroup>
+                                <optgroup label="Дни">
+                                    <option value="24">1 день</option>
+                                    <option value="48">2 дня</option>
+                                    <option value="72">3 дня</option>
+                                    <option value="96">4 дня</option>
+                                    <option value="120">5 дней</option>
+                                    <option value="144">6 дней</option>
+                                    <option value="168">7 дней</option>
+                                </optgroup>
                             </select>
+                            <small class="field-hint">Для дней применяется почасовой тариф.</small>
                         </label>
                     </div>
 
                     <label class="field">
                         <span>Количество гостей</span>
-                        <input id="bookingGuests" type="number" min="1" value="1" required>
+                        <input id="bookingGuests" type="number" min="1" value="1" aria-describedby="bookingGuestsError" required>
+                        <small class="field-error" id="bookingGuestsError" aria-live="polite"></small>
                     </label>
 
                     <div class="price-summary">
@@ -199,7 +213,7 @@
                         <strong id="totalPrice">0 ₽</strong>
                     </div>
 
-                    <p class="form-message" id="formMessage"></p>
+                    <p class="form-message" id="formMessage" role="status" aria-live="polite"></p>
                     <div class="booking-form-actions">
                         <button class="primary-button booking-button" type="submit" disabled>Забронировать</button>
                         <button class="cancel-edit-button" id="cancelEditButton" type="button" hidden>Отменить изменения</button>
@@ -240,10 +254,11 @@
                 <p class="eyebrow" id="addSpaceEyebrow">Новое пространство</p>
                 <h2 id="addSpaceTitle">Добавить коворкинг</h2>
 
-                <form class="add-space-form" id="addSpaceForm">
+                <form class="add-space-form" id="addSpaceForm" novalidate>
                     <label class="field">
                         <span>Название</span>
-                        <input id="newSpaceName" type="text" maxlength="60" required>
+                        <input id="newSpaceName" type="text" maxlength="60" aria-describedby="newSpaceNameError" required>
+                        <small class="field-error" id="newSpaceNameError" aria-live="polite"></small>
                     </label>
 
                     <div class="form-row">
@@ -258,24 +273,34 @@
 
                         <label class="field">
                             <span>Вместимость</span>
-                            <input id="newSpaceCapacity" type="number" min="1" max="50" value="1" required>
+                            <input id="newSpaceCapacity" type="number" min="1" max="50" value="1" aria-describedby="newSpaceCapacityError" required>
+                            <small class="field-error" id="newSpaceCapacityError" aria-live="polite"></small>
                         </label>
                     </div>
 
                     <label class="field">
                         <span>Адрес</span>
-                        <input id="newSpaceAddress" type="text" maxlength="100" placeholder="Например, м. Сокол, улица Балтийская, 9" required>
+                        <input id="newSpaceAddress" type="text" maxlength="100" placeholder="Например, м. Сокол, улица Балтийская, 9" aria-describedby="newSpaceAddressError" required>
+                        <small class="field-error" id="newSpaceAddressError" aria-live="polite"></small>
                     </label>
 
                     <label class="field">
                         <span>Стоимость за час, ₽</span>
-                        <input id="newSpacePrice" type="number" min="1" max="100000" value="500" required>
+                        <input id="newSpacePrice" type="number" min="1" max="100000" value="500" aria-describedby="newSpacePriceError" required>
+                        <small class="field-error" id="newSpacePriceError" aria-live="polite"></small>
                     </label>
 
                     <label class="field">
                         <span>Описание</span>
-                        <textarea id="newSpaceDescription" maxlength="400" rows="4" required></textarea>
+                        <textarea id="newSpaceDescription" maxlength="400" rows="4" aria-describedby="newSpaceDescriptionError" required></textarea>
+                        <small class="field-error" id="newSpaceDescriptionError" aria-live="polite"></small>
                     </label>
+
+                    <fieldset class="form-images">
+                        <legend>Изображение</legend>
+                        <p>Выберите фотографию для карточки коворкинга.</p>
+                        <div class="image-options" id="newSpaceImages"></div>
+                    </fieldset>
 
                     <fieldset class="form-amenities">
                         <legend>Удобства</legend>
@@ -307,6 +332,7 @@
                         </div>
                     </fieldset>
 
+                    <p class="form-message" id="addSpaceFormMessage" role="status" aria-live="polite"></p>
                     <button class="primary-button" id="addSpaceSubmit" type="submit">Добавить коворкинг</button>
                 </form>
             </div>

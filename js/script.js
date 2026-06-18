@@ -60,13 +60,19 @@ const addSpaceForm = document.getElementById("addSpaceForm");
 const addSpaceEyebrow = document.getElementById("addSpaceEyebrow");
 const addSpaceTitle = document.getElementById("addSpaceTitle");
 const addSpaceSubmit = document.getElementById("addSpaceSubmit");
+const addSpaceFormMessage = document.getElementById("addSpaceFormMessage");
 const newSpaceName = document.getElementById("newSpaceName");
 const newSpaceType = document.getElementById("newSpaceType");
 const newSpaceCapacity = document.getElementById("newSpaceCapacity");
 const newSpaceAddress = document.getElementById("newSpaceAddress");
 const newSpacePrice = document.getElementById("newSpacePrice");
 const newSpaceDescription = document.getElementById("newSpaceDescription");
+const newSpaceImages = document.getElementById("newSpaceImages");
 const toast = document.getElementById("toast");
+const availableSpaceImages = Array.from(
+    { length: 8 },
+    (_, index) => `images/coworking-space_${index + 1}.jpg`
+);
 
 function loadUserSpaces() {
     try {
@@ -128,6 +134,17 @@ function formatDate(value) {
         day: "numeric",
         month: "long"
     });
+}
+
+function formatDuration(hours) {
+    if (hours < 24) {
+        const hourWord = hours === 1 ? "час" : [2, 3, 4].includes(hours) ? "часа" : "часов";
+        return `${hours} ${hourWord}`;
+    }
+
+    const days = hours / 24;
+    const dayWord = days === 1 ? "день" : [2, 3, 4].includes(days) ? "дня" : "дней";
+    return `${days} ${dayWord}`;
 }
 
 function formatResultCount(count) {
@@ -257,6 +274,7 @@ function selectSpace(spaceId) {
     bookingGuests.max = space.capacity;
     bookingGuests.value = Math.min(Number(bookingGuests.value), space.capacity);
     bookingButton.disabled = false;
+    clearFormValidation(bookingForm);
     clearFormMessage();
     updateTotal();
     renderSpaces();
@@ -269,14 +287,81 @@ function updateTotal() {
     totalPrice.textContent = formatPrice(total);
 }
 
-function showFormMessage(text) {
-    formMessage.textContent = text;
-    formMessage.classList.add("show");
+function showStatusMessage(element, text, type = "error") {
+    element.textContent = text;
+    element.classList.add("show");
+    element.classList.toggle("success", type === "success");
+}
+
+function clearStatusMessage(element) {
+    element.textContent = "";
+    element.classList.remove("show", "success");
+}
+
+function showFormMessage(text, type = "error") {
+    showStatusMessage(formMessage, text, type);
 }
 
 function clearFormMessage() {
-    formMessage.textContent = "";
-    formMessage.classList.remove("show");
+    clearStatusMessage(formMessage);
+}
+
+function showFieldError(field, text) {
+    const error = field.closest(".field")?.querySelector(".field-error");
+
+    field.classList.add("input-error");
+    field.setAttribute("aria-invalid", "true");
+
+    if (error) {
+        error.textContent = text;
+    }
+}
+
+function clearFieldError(field) {
+    const error = field.closest(".field")?.querySelector(".field-error");
+
+    field.classList.remove("input-error");
+    field.removeAttribute("aria-invalid");
+
+    if (error) {
+        error.textContent = "";
+    }
+}
+
+function clearFormValidation(form) {
+    form.querySelectorAll(".input-error").forEach(clearFieldError);
+}
+
+function validateBookingDate() {
+    if (!bookingDate.value) {
+        showFieldError(bookingDate, "Выберите дату бронирования.");
+        return false;
+    }
+
+    if (bookingDate.min && bookingDate.value < bookingDate.min) {
+        showFieldError(bookingDate, "Дата не может быть раньше сегодняшней.");
+        return false;
+    }
+
+    clearFieldError(bookingDate);
+    return true;
+}
+
+function validateBookingGuests(space) {
+    const guests = Number(bookingGuests.value);
+
+    if (!Number.isInteger(guests) || guests < 1) {
+        showFieldError(bookingGuests, "Укажите минимум одного гостя.");
+        return false;
+    }
+
+    if (space && guests > space.capacity) {
+        showFieldError(bookingGuests, `Максимальная вместимость: ${space.capacity} человек.`);
+        return false;
+    }
+
+    clearFieldError(bookingGuests);
+    return true;
 }
 
 function finishEditing() {
@@ -317,7 +402,7 @@ function renderBookings() {
         item.classList.toggle("editing", booking.id === state.editingBookingId);
         item.innerHTML = `
             <strong>${booking.spaceName}</strong>
-            <span>${formatDate(booking.date)}, ${booking.time} · ${booking.duration} ч. · ${formatPrice(booking.total)}</span>
+            <span>${formatDate(booking.date)}, ${booking.time} · ${formatDuration(booking.duration)} · ${formatPrice(booking.total)}</span>
             <button class="edit-booking" type="button" data-action="edit" data-id="${booking.id}" aria-label="Редактировать бронирование">✎</button>
             <button class="cancel-booking" type="button" data-action="delete" data-id="${booking.id}" aria-label="Отменить бронирование">×</button>
         `;
@@ -357,6 +442,106 @@ function resetAddSpaceForm() {
     addSpaceForm.reset();
     newSpaceCapacity.value = "1";
     newSpacePrice.value = "500";
+    const firstImage = addSpaceForm.querySelector('input[name="newSpaceImage"]');
+
+    if (firstImage) {
+        firstImage.checked = true;
+    }
+
+    clearFormValidation(addSpaceForm);
+    clearStatusMessage(addSpaceFormMessage);
+}
+
+function renderImageOptions() {
+    newSpaceImages.innerHTML = "";
+
+    availableSpaceImages.forEach((image, index) => {
+        const label = document.createElement("label");
+        const input = document.createElement("input");
+        const choice = document.createElement("span");
+        const preview = document.createElement("img");
+        const caption = document.createElement("small");
+
+        label.className = "image-option";
+        input.type = "radio";
+        input.name = "newSpaceImage";
+        input.value = image;
+        input.defaultChecked = index === 0;
+        preview.src = image;
+        preview.alt = "";
+        preview.loading = "lazy";
+        caption.textContent = `Фото ${index + 1}`;
+        choice.className = "image-choice";
+        choice.append(preview, caption);
+        label.append(input, choice);
+        newSpaceImages.appendChild(label);
+    });
+}
+
+function getAddSpaceFieldError(field) {
+    const value = field.value.trim();
+
+    if (field === newSpaceName && !value) {
+        return "Введите название коворкинга.";
+    }
+
+    if (field === newSpaceAddress && !value) {
+        return "Введите адрес коворкинга.";
+    }
+
+    if (field === newSpaceDescription && !value) {
+        return "Добавьте краткое описание.";
+    }
+
+    if (field === newSpaceCapacity) {
+        const capacity = Number(field.value);
+
+        if (!Number.isInteger(capacity) || capacity < 1 || capacity > 50) {
+            return "Укажите вместимость от 1 до 50 человек.";
+        }
+    }
+
+    if (field === newSpacePrice) {
+        const price = Number(field.value);
+
+        if (!Number.isFinite(price) || price < 1 || price > 100000) {
+            return "Укажите стоимость от 1 до 100 000 ₽.";
+        }
+    }
+
+    return "";
+}
+
+function validateAddSpaceField(field) {
+    const error = getAddSpaceFieldError(field);
+
+    if (error) {
+        showFieldError(field, error);
+        return false;
+    }
+
+    clearFieldError(field);
+    return true;
+}
+
+function validateAddSpaceForm() {
+    const fields = [
+        newSpaceName,
+        newSpaceCapacity,
+        newSpaceAddress,
+        newSpacePrice,
+        newSpaceDescription
+    ];
+    const isValid = fields.map(validateAddSpaceField).every(Boolean);
+
+    if (!isValid) {
+        showStatusMessage(addSpaceFormMessage, "Исправьте выделенные поля.");
+        addSpaceForm.querySelector(".input-error")?.focus();
+        return false;
+    }
+
+    clearStatusMessage(addSpaceFormMessage);
+    return true;
 }
 
 function openAddSpaceModal(spaceId = null) {
@@ -375,6 +560,12 @@ function openAddSpaceModal(spaceId = null) {
         newSpaceAddress.value = space.address;
         newSpacePrice.value = space.price;
         newSpaceDescription.value = space.description;
+        const imageInputs = addSpaceForm.querySelectorAll('input[name="newSpaceImage"]');
+        const hasCurrentImage = availableSpaceImages.includes(space.image);
+
+        imageInputs.forEach((input, index) => {
+            input.checked = hasCurrentImage ? input.value === space.image : index === 0;
+        });
         addSpaceForm.querySelectorAll('input[name="newAmenity"]').forEach((input) => {
             input.checked = space.features.includes(input.value);
         });
@@ -402,6 +593,7 @@ function clearSelectedSpace() {
     bookingButton.textContent = "Забронировать";
     cancelEditButton.hidden = true;
     totalPrice.textContent = formatPrice(0);
+    clearFormValidation(bookingForm);
     clearFormMessage();
 }
 
@@ -577,17 +769,26 @@ spaceGrid.addEventListener("click", (event) => {
 
 bookingDuration.addEventListener("change", updateTotal);
 
+bookingDate.addEventListener("input", () => {
+    validateBookingDate();
+
+    if (!bookingForm.querySelector(".input-error")) {
+        clearFormMessage();
+    }
+});
+
 bookingGuests.addEventListener("input", () => {
     const space = spaces.find((item) => item.id === state.selectedSpaceId);
-    clearFormMessage();
+    validateBookingGuests(space);
 
-    if (space && Number(bookingGuests.value) > space.capacity) {
-        showFormMessage(`Максимальная вместимость: ${space.capacity} человек.`);
+    if (!bookingForm.querySelector(".input-error")) {
+        clearFormMessage();
     }
 });
 
 bookingForm.addEventListener("submit", (event) => {
     event.preventDefault();
+    clearFormMessage();
 
     const space = spaces.find((item) => item.id === state.selectedSpaceId);
 
@@ -596,18 +797,16 @@ bookingForm.addEventListener("submit", (event) => {
         return;
     }
 
+    const dateIsValid = validateBookingDate();
+    const guestsAreValid = validateBookingGuests(space);
+
+    if (!dateIsValid || !guestsAreValid) {
+        showFormMessage("Исправьте выделенные поля.");
+        bookingForm.querySelector(".input-error")?.focus();
+        return;
+    }
+
     const guests = Number(bookingGuests.value);
-
-    if (!bookingDate.value) {
-        showFormMessage("Укажите дату бронирования.");
-        return;
-    }
-
-    if (guests < 1 || guests > space.capacity) {
-        showFormMessage(`Укажите от 1 до ${space.capacity} гостей.`);
-        return;
-    }
-
     const duration = Number(bookingDuration.value);
     const bookingData = {
         spaceId: space.id,
@@ -631,6 +830,7 @@ bookingForm.addEventListener("submit", (event) => {
 
         saveBookings();
         finishEditing();
+        showFormMessage("Изменения бронирования сохранены.", "success");
         showToast("Изменения бронирования сохранены");
         return;
     }
@@ -641,7 +841,7 @@ bookingForm.addEventListener("submit", (event) => {
     });
     saveBookings();
     renderBookings();
-    clearFormMessage();
+    showFormMessage(`Бронирование «${space.name}» успешно оформлено.`, "success");
     showToast(`Бронирование «${space.name}» оформлено`);
 });
 
@@ -681,24 +881,42 @@ addSpaceModal.addEventListener("click", (event) => {
     }
 });
 
+addSpaceForm.addEventListener("input", (event) => {
+    const field = event.target.closest("input, textarea");
+
+    if (!field || !field.closest(".field")) {
+        return;
+    }
+
+    if (field.classList.contains("input-error")) {
+        validateAddSpaceField(field);
+    }
+
+    if (!addSpaceForm.querySelector(".input-error")) {
+        clearStatusMessage(addSpaceFormMessage);
+    }
+});
+
 addSpaceForm.addEventListener("submit", (event) => {
     event.preventDefault();
 
+    if (!validateAddSpaceForm()) {
+        return;
+    }
+
     const typeSettings = {
         open: {
-            label: "Открытое место",
-            image: "images/coworking-space_1.jpg"
+            label: "Открытое место"
         },
         office: {
-            label: "Приватный кабинет",
-            image: "images/coworking-space_2.jpg"
+            label: "Приватный кабинет"
         },
         meeting: {
-            label: "Переговорная",
-            image: "images/coworking-space_3.jpg"
+            label: "Переговорная"
         }
     };
     const selectedType = typeSettings[newSpaceType.value];
+    const selectedImage = addSpaceForm.querySelector('input[name="newSpaceImage"]:checked');
     const features = Array.from(
         addSpaceForm.querySelectorAll('input[name="newAmenity"]:checked'),
         (input) => input.value
@@ -712,7 +930,7 @@ addSpaceForm.addEventListener("submit", (event) => {
         capacity: Number(newSpaceCapacity.value),
         price: Number(newSpacePrice.value),
         rating: null,
-        image: selectedType.image,
+        image: selectedImage?.value || availableSpaceImages[0],
         features,
         description: newSpaceDescription.value.trim(),
         isCustom: true
@@ -827,5 +1045,6 @@ searchDate.value = today;
 bookingDate.value = today;
 
 setTheme(localStorage.getItem("coworkingTheme") === "dark");
+renderImageOptions();
 renderSpaces();
 renderBookings();
